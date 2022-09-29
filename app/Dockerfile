@@ -1,4 +1,4 @@
 FROM python:alpine
 WORKDIR /usr/src/app
-RUN pip install django gunicorn
+RUN pip install django django-environ gunicorn
 COPY . .
