@@ -1,14 +1,19 @@
 services:
   web:
-    build: ./app
-    command: gunicorn mysite.wsgi:application --bind 0.0.0.0:8000
+    image: python:alpine
+    working_dir: /app
+    expose:
+      - 8000
+    command: sh -c "
+      pip install django django-environ gunicorn &&
+      gunicorn mysite.wsgi:application --bind 0.0.0.0:8000"
     volumes:
-      - ./app:/usr/src/app
-    ports:
-      - 8000:8000
+      - ./app:/app
   nginx:
-    build: ./nginx
+    image: nginx:alpine
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
     ports:
-      - 1337:80
+      - 6969:80
     depends_on:
       - web
